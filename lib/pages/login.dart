@@ -3,35 +3,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase/pages/home_page.dart';
 
 class LoginPage extends StatelessWidget {
-
   const LoginPage({ Key? key }) : super(key: key);
-  
-
   @override
   Widget build(BuildContext context) {
-
   var email;
   var password;
+  
   login()async{
-        try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    final  user = (await firebaseAuth.signInWithEmailAndPassword(email: email, password: password)).user;
+    print(user);
+    if(user!.email==email){
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>const HomePage()));
     }
-    var userCredential;
-    if(userCredential!=null){
-      Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-              );
+    else{
+      print("error");
     }
+    //     try {
+    //   UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+    //     email: email,
+    //     password: password
+    //   );
+    // } on FirebaseAuthException catch (e) {
+    //   print(e);
+    //   if (e.code == 'user-not-found') {
+    //     print('No user found for that email.');
+    //   } else if (e.code == 'wrong-password') {
+    //     print('Wrong password provided for that user.');
+    //   }
+    // }
+
+    // var userCredential;
+    // if(userCredential!="NULL"){
+    //   Navigator.push(
+    //             context,
+    //             MaterialPageRoute(builder: (context) => const HomePage()),
+    //           );
+    // }
+    // else{
+    //   print("error");
+    // }
   }
 
     double height = MediaQuery.of(context).size.height;
